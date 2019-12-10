@@ -205,7 +205,7 @@ int main(void)
 				glm::vec3(0.0f, 0.0f, 1.0f)
 			);
 			*/
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.08f));
 
 			slrObjectShader.setVec3("cameraPos", camera.positionVector + camera.frontVector);
 			slrObjectShader.setVec3("viewPos", camera.positionVector);

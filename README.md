@@ -38,7 +38,7 @@ This project uses cmake 3.8 as a result, generating makefiles is a platform agni
 
 
 
-![](C:\Users\dhruv\Development\git\lidar-viewer\res\images\1.PNG)
+![](./lidar-viewer/res/images/1.PNG)
 
 ![](C:\Users\dhruv\Development\git\lidar-viewer\res\images\3.PNG)
 

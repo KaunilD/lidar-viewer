@@ -13,10 +13,6 @@ _deps
 dataset-1-subset/IJRR-Dataset-1-subset/LCM/LCM-01.log
 dataset-1-subset/IJRR-Dataset-1-subset/PARAM.mat
 *.csv
-*.json
-*.csv
-*.json
-*.csv
 *.mtl
 *.obj
 *.jpg

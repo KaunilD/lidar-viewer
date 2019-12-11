@@ -139,22 +139,22 @@ int main(void)
 
 	// POINTCLOUD OBJECT
 	ShaderProgram pcObjectShader(
-		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/vertex_core.glsl",
-		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/fragment_core.glsl"
+		"./glsl/vertex_core.glsl",
+		"./glsl/fragment_core.glsl"
 	);
 	PCObject pcObject(
-		"C:/Users/dhruv/Development/git/lidar-viewer/data/scans.json"
+		"../data/scans.json"
 	);
 	pcObject.attachShaders(pcObjectShader.programID);
 	pcObject.setupGLBuffers();
 
 	// SLR CAMERA
 	ShaderProgram slrObjectShader(
-		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/object_vs.glsl",
-		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/object_fs.glsl"
+		"./glsl/object_vs.glsl",
+		"./glsl/object_fs.glsl"
 	);
 	ObjLoader slrObject(
-		"C:/Users/dhruv/Development/git/lidar-viewer/res/slr_camera/slr_camera.obj"
+		"../res/slr_camera/slr_camera.obj"
 	);
 	slrObject.attachShaders(slrObjectShader.programID);
 	slrObject.setupGLBuffers();

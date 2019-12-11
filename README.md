@@ -16,7 +16,7 @@ This project uses cmake 3.8 as a result, generating makefiles is a platform agni
 ##### Windows
 1. Edit the `CMakeLists.txt` set the `BOOST_ROOT` `BOOST_LIBRARYDIR` and `BOOST_INCLUDEDIR` equal to the location of your boost installation. [These (section 5.2.1, steps 1-3)](https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html) are the steps I followed while installing boost on my Windows 10. 
 2. Run `cmake .` in powershell. The `.sln` file fow the project will be generated. 
-3. Right click and build the `ALL_BUILD` file generated in step 2.
+3. Open the `ALL_BUILD.sln` file in Visual Studio. Right click and build the `ALL_BUILD` file generated in step 2.
 4. The binary will be output in lidar-viewer/lib directory.
 
 ##### Linux

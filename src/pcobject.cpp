@@ -23,8 +23,9 @@ PCObject::PCObject(const char * data_path) {
 						vertices.push_back(Vertex{
 							glm::vec3(
 								point.second.get<float>("x"),
-								point.second.get<float>("y"),
-								point.second.get<float>("z")
+								point.second.get<float>("z"),
+								point.second.get<float>("y")
+
 							),
 							glm::vec3(1.0f),
 							glm::vec3(1.0f),

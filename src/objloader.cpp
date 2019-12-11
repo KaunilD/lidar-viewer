@@ -14,7 +14,7 @@ ObjLoader::ObjLoader(const char * obj_path) {
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cout << "ERROR::SHADERPROGRAM::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		std::cout << "ERROR::OBJLOADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 	}
 	while (!objFile.eof()) {
 		std::getline(objFile, line);

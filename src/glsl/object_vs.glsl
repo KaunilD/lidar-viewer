@@ -17,5 +17,5 @@ void main()
 	vs_position = vertex_position;
 	vs_normal = vertex_normal;
 
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex_position, 1.f);
+	gl_Position = viewMatrix * modelMatrix * vec4(vertex_position, 1.f);
 }

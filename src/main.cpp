@@ -31,7 +31,7 @@ float fov = 45.0f;
 float near = 0.001f;
 float far = 200.0f;
 
-Camera camera;
+Camera camera, slrCamera;
 
 int readLIDARFrame(std::string, struct LIDARFrame *);
 void display(GLFWwindow);
@@ -56,26 +56,46 @@ void updateInput(GLFWwindow * window) {
 
 	cameraSpeed = 0.1f * (float)deltaTime;
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		camera.processKB(W, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		slrCamera.processKB(W, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		camera.processKB(S, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		slrCamera.processKB(S, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS){
 		camera.processKB(Q, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		slrCamera.processKB(Q, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		camera.processKB(A, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+		slrCamera.processKB(A, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
 		camera.processKB(Z, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		slrCamera.processKB(Z, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
 		camera.processKB(X, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		slrCamera.processKB(X, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		camera.processKB(UP, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		slrCamera.processKB(UP, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		camera.processKB(DOWN, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		slrCamera.processKB(DOWN, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 		camera.processKB(LEFT, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		slrCamera.processKB(LEFT, cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		camera.processKB(RIGHT, cameraSpeed);
+		slrCamera.processKB(RIGHT, cameraSpeed);
+	}
 	//std::cout << pitch << " " << yaw << std::endl;
 
 }
@@ -131,30 +151,32 @@ int main(void)
 	// INITIALIZE GLEW
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
-		std::cout << "ERROR::MAIN.CPP::GLEW_INIT_FAILED" << "\n";
+		std::cout << "ERROR::MAIN.CPP::GLEW_INIT_FAILED" << "/n";
 		glfwTerminate();
 	}
 
 
 
 	// POINTCLOUD OBJECT
+	
 	ShaderProgram pcObjectShader(
-		"./glsl/vertex_core.glsl",
-		"./glsl/fragment_core.glsl"
+		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/vertex_core.glsl",
+		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/fragment_core.glsl"
 	);
+	
 	PCObject pcObject(
-		"../data/scans.json"
+		"C:/Users/dhruv/Development/git/lidar-viewer/data/scans.json"
 	);
 	pcObject.attachShaders(pcObjectShader.programID);
 	pcObject.setupGLBuffers();
-
+	
 	// SLR CAMERA
 	ShaderProgram slrObjectShader(
-		"./glsl/object_vs.glsl",
-		"./glsl/object_fs.glsl"
+		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/object_vs.glsl",
+		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/object_fs.glsl"
 	);
 	ObjLoader slrObject(
-		"../res/slr_camera/slr_camera.obj"
+		"C:/Users/dhruv/Development/git/lidar-viewer/res/slr_camera/slr_camera.obj"
 	);
 	slrObject.attachShaders(slrObjectShader.programID);
 	slrObject.setupGLBuffers();
@@ -165,10 +187,21 @@ int main(void)
 		fov, frameBufferWidth, frameBufferHeight, near, far
 	);
 
+	slrCamera = Camera(
+		camUpVector, 
+		glm::vec3(-0.75f, -0.75f, 0.0f), 
+		glm::vec3(-0.75f, -0.75f, 0.0f),
+		fov, frameBufferWidth, frameBufferHeight, near, far
+	);
+
+	slrCamera.pitch = 0.0f;
+	slrCamera.yaw = 180.0f;
+
+	
 	pcObjectShader.useProgram();
 	pcObjectShader.setMat4("viewMatrix", camera.viewMatrix);
 	pcObjectShader.setMat4("projectionMatrix", camera.projectionMatrix);
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		currentTime = glfwGetTime();
@@ -186,30 +219,36 @@ int main(void)
 
 			camera.updateProjectionMatrix();
 			camera.updateViewMatrix();
-			
+
 			pcObjectShader.useProgram();
-			// UPDATE CAMERA
 			pcObjectShader.setMat4("viewMatrix", camera.viewMatrix);
 			pcObjectShader.setMat4("projectionMatrix", camera.projectionMatrix);
-
 			pcObject.render();
 			
 			slrObjectShader.useProgram();
-			// UPDATE CAMERA
+			//for lighting
+			slrObjectShader.setVec3("cameraPos", glm::vec3(-0.75, -0.75, 1.0));
+			slrObjectShader.setVec3("viewPos", glm::vec3(-0.75, -0.75, 1.0));
 
 			glm::mat4 modelMatrix = glm::mat4(1.0f);
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
+			modelMatrix = glm::translate(
+				modelMatrix, 
+				glm::vec3(-7.50, -7.50, 0.0) + 
+				glm::vec3(slrCamera.positionVector.r, slrCamera.positionVector.g, 0.0f)
+			);
+			modelMatrix = glm::rotate(
+				modelMatrix, 
+				glm::radians(slrCamera.pitch), glm::vec3(1.0, 0.0, 0.0)
+			);
+			modelMatrix = glm::rotate(
+				modelMatrix,
+				glm::radians(slrCamera.yaw), glm::vec3(0.0, 1.0, 0.0)
+			);
 			
-			//for lighting
-			slrObjectShader.setVec3("cameraPos", camera.positionVector);
-			slrObjectShader.setVec3("viewPos", camera.positionVector + camera.frontVector);
-			
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.05f));
 			slrObjectShader.setMat4("modelMatrix", modelMatrix);
-			
-			glm::mat4 viewMatrix = glm::translate(camera.viewMatrix, -camera.positionVector);
-			slrObjectShader.setMat4("viewMatrix", viewMatrix);
-			
-			slrObjectShader.setMat4("projectionMatrix", camera.projectionMatrix);
+			slrObjectShader.setMat4("viewMatrix", glm::mat4(1.0f));
+			slrObjectShader.setMat4("projectionMatrix", slrCamera.projectionMatrix);
 
 			slrObject.render();
 		}
@@ -220,12 +259,11 @@ int main(void)
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
-
+	
 	glDeleteVertexArrays(1, &pcObject.VAO);
 	glDeleteBuffers(1, &pcObject.VBO);
 	glDeleteProgram(pcObjectShader.programID);
-
-
+	
 	glDeleteVertexArrays(1, &slrObject.VAO);
 	glDeleteBuffers(1, &slrObject.VBO);
 	glDeleteProgram(slrObjectShader.programID);

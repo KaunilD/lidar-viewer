@@ -24,7 +24,7 @@ glm::mat4 modelMatrix;
 // VIEW MATRIX
 glm::vec3 camUpVector = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 camFrontVector = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 camPosVector = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 camPosVector = glm::vec3(0.0f, 0.0f, 1.0f);
 
 // PROJECTION MATRIX
 float fov = 45.0f;
@@ -198,19 +198,17 @@ int main(void)
 			// UPDATE CAMERA
 
 			glm::mat4 modelMatrix = glm::mat4(1.0f);
-			/*
-			modelMatrix = glm::rotate(
-				modelMatrix, 
-				(float)glfwGetTime() * glm::radians(50.0f), 
-				glm::vec3(0.0f, 0.0f, 1.0f)
-			);
-			*/
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.08f));
-
-			slrObjectShader.setVec3("cameraPos", camera.positionVector + camera.frontVector);
-			slrObjectShader.setVec3("viewPos", camera.positionVector);
+			
+			//for lighting
+			slrObjectShader.setVec3("cameraPos", camera.positionVector);
+			slrObjectShader.setVec3("viewPos", camera.positionVector + camera.frontVector);
+			
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.05f));
 			slrObjectShader.setMat4("modelMatrix", modelMatrix);
-			slrObjectShader.setMat4("viewMatrix", camera.viewMatrix);
+			
+			glm::mat4 viewMatrix = glm::translate(camera.viewMatrix, -camera.positionVector);
+			slrObjectShader.setMat4("viewMatrix", viewMatrix);
+			
 			slrObjectShader.setMat4("projectionMatrix", camera.projectionMatrix);
 
 			slrObject.render();

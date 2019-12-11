@@ -20,5 +20,5 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-#define VIEWPORT_WIDTH 800
+#define VIEWPORT_WIDTH 1000
 #define VIEWPORT_HEIGHT 800

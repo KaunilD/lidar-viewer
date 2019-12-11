@@ -19,11 +19,6 @@ This project uses cmake 3.8 as a result, generating makefiles is a platform agni
 3. Open the `ALL_BUILD.sln` file in Visual Studio. Right click and build the `ALL_BUILD` file generated in step 2.
 4. The binary will be output in lidar-viewer/lib directory.
 
-##### Linux
-
-WIP
-
-
 ##### Controls
 1. W, S: to move the camera along the screen Y axis, pointcloud Z axis.
 2. Q, A: to move the camera along the screen Z axis, pointcloud Y axis.
@@ -34,13 +29,9 @@ WIP
 
 ##### Screens
 
-
-
-
+Watch the video [here.](https://vimeo.com/378903655)
 
 ![](res/images/1.PNG)
-
-![](res/images/3.PNG)
 
 ##### Learning goals accomplished
 

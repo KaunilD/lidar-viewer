@@ -16,3 +16,8 @@ dataset-1-subset/IJRR-Dataset-1-subset/PARAM.mat
 *.mtl
 *.obj
 *.jpg
+*.ppm
+*.log
+*.mat
+*.pcap
+*.json

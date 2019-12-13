@@ -85,6 +85,13 @@ ObjLoader::ObjLoader(const char * obj_path) {
 
 }
 
+void ObjLoader::setupModelMatrix() {
+
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(-0.75f, -0.75f, -0.75f));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
+
+}
+
 void ObjLoader::setupGLBuffers() {
 	
 	glGenVertexArrays(1, &VAO);

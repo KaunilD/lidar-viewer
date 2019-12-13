@@ -5,7 +5,14 @@ class PCObject {
 public:
 
 	unsigned int idx;
-	int totalPoints = 70000;
+	int totalPoints = 700;
+
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+
+	glm::vec3 min = glm::vec3(1.0f);
+	glm::vec3 max = glm::vec3(1.0f);
+	glm::vec3 mean = glm::vec3(1.0f);
+
 
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;

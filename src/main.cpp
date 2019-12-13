@@ -96,12 +96,17 @@ void updateInput(GLFWwindow * window) {
 		camera.processKB(RIGHT, cameraSpeed);
 		slrCamera.processKB(RIGHT, cameraSpeed);
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+				
+	}
+
 	//std::cout << pitch << " " << yaw << std::endl;
 
 }
 
 void frameBufferResizeCb(GLFWwindow * window, int fbW, int fbH) {
-	//std::cout << fbW << " " << fbH << std::endl;
+	
 	frameBufferWidth = fbW;
 	frameBufferHeight = fbW;
 	glViewport(0, 0, fbW, fbH);
@@ -109,8 +114,7 @@ void frameBufferResizeCb(GLFWwindow * window, int fbW, int fbH) {
 
 void initGlRenderFlags() {
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_PROGRAM_POINT_SIZE);
-	//glPointSize(10.0f);
+	
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -131,7 +135,7 @@ int main(void)
 	GLFWwindow* window;
 	window = glfwCreateWindow(
 		VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
-		"LIDAR Viewer", NULL, NULL
+		"PC Viewer", NULL, NULL
 	);
 
 	if (!window)
@@ -158,18 +162,18 @@ int main(void)
 
 
 	// POINTCLOUD OBJECT
-	
 	ShaderProgram pcObjectShader(
 		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/vertex_core.glsl",
 		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/fragment_core.glsl"
 	);
-	
 	PCObject pcObject(
-		"C:/Users/dhruv/Development/git/lidar-viewer/data/scans.json"
+		"C:/Users/dhruv/Development/git/lidar-viewer/data/scans_2.json"
 	);
 	pcObject.attachShaders(pcObjectShader.programID);
 	pcObject.setupGLBuffers();
 	
+
+
 	// SLR CAMERA
 	ShaderProgram slrObjectShader(
 		"C:/Users/dhruv/Development/git/lidar-viewer/src/glsl/object_vs.glsl",
@@ -178,6 +182,7 @@ int main(void)
 	ObjLoader slrObject(
 		"C:/Users/dhruv/Development/git/lidar-viewer/res/slr_camera/slr_camera.obj"
 	);
+	slrObject.setupModelMatrix();
 	slrObject.attachShaders(slrObjectShader.programID);
 	slrObject.setupGLBuffers();
 
@@ -187,16 +192,14 @@ int main(void)
 		fov, frameBufferWidth, frameBufferHeight, near, far
 	);
 
+	
+
 	slrCamera = Camera(
 		camUpVector, 
 		glm::vec3(-0.75f, -0.75f, 0.0f), 
 		glm::vec3(-0.75f, -0.75f, 0.0f),
 		fov, frameBufferWidth, frameBufferHeight, near, far
 	);
-
-	slrCamera.pitch = 0.0f;
-	slrCamera.yaw = 180.0f;
-
 	
 	pcObjectShader.useProgram();
 	pcObjectShader.setMat4("viewMatrix", camera.viewMatrix);
@@ -220,34 +223,22 @@ int main(void)
 			camera.updateProjectionMatrix();
 			camera.updateViewMatrix();
 
+			slrCamera.updateViewMatrix();
+
 			pcObjectShader.useProgram();
 			pcObjectShader.setMat4("viewMatrix", camera.viewMatrix);
 			pcObjectShader.setMat4("projectionMatrix", camera.projectionMatrix);
 			pcObject.render();
 			
 			slrObjectShader.useProgram();
-			//for lighting
-			slrObjectShader.setVec3("cameraPos", glm::vec3(-0.75, -0.75, 1.0));
-			slrObjectShader.setVec3("viewPos", glm::vec3(-0.75, -0.75, 1.0));
-
-			glm::mat4 modelMatrix = glm::mat4(1.0f);
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
-			modelMatrix = glm::translate(
-				modelMatrix, 
-				glm::vec3(-7.50, -7.50, 0.0) + 
-				glm::vec3(slrCamera.positionVector.r, slrCamera.positionVector.g, 0.0f)
-			);
-			modelMatrix = glm::rotate(
-				modelMatrix, 
-				glm::radians(slrCamera.pitch), glm::vec3(1.0, 0.0, 0.0)
-			);
-			modelMatrix = glm::rotate(
-				modelMatrix,
-				glm::radians(slrCamera.yaw), glm::vec3(0.0, 1.0, 0.0)
-			);
 			
-			slrObjectShader.setMat4("modelMatrix", modelMatrix);
-			slrObjectShader.setMat4("viewMatrix", glm::mat4(1.0f));
+			slrObjectShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+			slrObjectShader.setVec3("objectColor", glm::vec3(0.75f, 0.75f, 1.0f));
+			slrObjectShader.setVec3("lightPosition", glm::vec3(-0.75f, -0.75f, -1.0f));
+
+
+			slrObjectShader.setMat4("modelMatrix", slrObject.modelMatrix);
+			slrObjectShader.setMat4("viewMatrix", slrCamera.viewMatrix);
 			slrObjectShader.setMat4("projectionMatrix", slrCamera.projectionMatrix);
 
 			slrObject.render();

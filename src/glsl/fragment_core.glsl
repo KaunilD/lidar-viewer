@@ -32,5 +32,5 @@ double blue(double gray) {
 
 void main()
 {
-	fs_color = vec4(red(vs_position.r), green(vs_position.r), blue(vs_position.r), 1.f);
+	fs_color = vec4(red(vs_position.g*15.0f), green(vs_position.g*10.0f), blue(vs_position.g*15.0f), 1.f);
 }

@@ -7,11 +7,13 @@ PCObject::~PCObject() {
 PCObject::PCObject() {};
 
 PCObject::PCObject(const char * data_path) {
+	std::cout << "INFO::PCOBJECT:: Reading " << data_path << std::endl;
+
 	try {
 		boost::property_tree::ptree pt;
 		boost::property_tree::read_json(data_path, pt);
 		for (boost::property_tree::ptree::value_type& root : pt) {
-			std::cout << root.first.data() << std::endl;
+			std::cout << "Reading frame " << idx << std::endl;
 
 			for (boost::property_tree::ptree::value_type& frames : root.second) {
 
@@ -46,6 +48,10 @@ PCObject::PCObject(const char * data_path) {
 	catch (std::exception const& e) {
 		std::cout << "ERROR:: JSON_READ::" << e.what() << std::endl;
 	}
+
+	modelMatrix = glm::scale(modelMatrix, 1.0f/max);
+	modelMatrix = glm::translate(modelMatrix, mean);
+
 }
 
 void PCObject::setupGLBuffers() {

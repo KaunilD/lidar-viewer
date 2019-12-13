@@ -14,8 +14,13 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-	vs_position = vertex_position;
-	vs_normal = vertex_normal;
+	vs_normal = mat3(transpose(inverse(modelMatrix))) * vertex_normal;  
 
-	gl_Position = viewMatrix * modelMatrix * vec4(vertex_position, 1.f);
+	gl_Position = modelMatrix * viewMatrix * vec4(vertex_position, 1.f);
+	
+	// multiply vertex_position with model and view matrix to give an effect 
+	// of a stationary light source illuminating different parts of the object
+	// as it changes views
+	vs_position = vec3(gl_position);
+	
 }

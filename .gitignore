@@ -14,7 +14,6 @@ dataset-1-subset/IJRR-Dataset-1-subset/LCM/LCM-01.log
 dataset-1-subset/IJRR-Dataset-1-subset/PARAM.mat
 *.csv
 *.mtl
-*.obj
 *.jpg
 *.ppm
 *.log

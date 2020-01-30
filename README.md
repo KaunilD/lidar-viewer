@@ -41,4 +41,3 @@ Watch the video [here.](https://vimeo.com/378903655)
 ##### Goals pending
 
 0. __Minimap for the camera__: It is difficult to keep track of camera location while moving it around to explore the point cloud. The minimap is a work in progress. The approach I have identified is to offset the world camera movement by using the camera.positionVector to translate the viewMatrix of slrCamera object.
-1. __CUDA Interop__: Integrating CUDA for parallel proessing of every one of 70000+ data points. I have prior CUDA [https://github.com/KaunilD/cuda_cv](experience) so that will be handy in the integration.
